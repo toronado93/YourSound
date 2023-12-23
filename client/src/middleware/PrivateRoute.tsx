@@ -2,7 +2,7 @@ import { useLocation, Outlet, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 function PrivateRoute() {
-  const location = useLocation<any>("");
+  const location = useLocation();
 
   const [auth] = useState<boolean>(true);
   return auth ? (

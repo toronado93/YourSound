@@ -4,6 +4,12 @@ import {
   faX,
   faUserPlus,
   IconDefinition,
+  faRightToBracket,
+  faForward,
+  faInfo,
+  faMagnifyingGlass,
+  faArrowTrendUp,
+  faPeopleArrows,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { useNavigate } from "react-router-dom";
@@ -16,9 +22,10 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.svg";
 
 import { Disclosure, Transition } from "@headlessui/react";
-import { useState } from "react";
 
-type NavigationDestination = "/login" | "/signup" | "/about";
+import SignInSignUpComp from "./SignInSignUpComp";
+
+type NavigationDestination = "/login" | "/signup" | "/about" | "/";
 
 type NavigationItem = {
   id: number;
@@ -31,13 +38,36 @@ function NavbarPublic() {
   const navigate = useNavigate();
   const navigation: NavigationItem[] = [
     { id: 1, title: "Sign Up", icon: faUserPlus, to: "/signup" },
-    { id: 2, title: "Log In", icon: faUserPlus, to: "/login" },
-    { id: 3, title: "Stream", icon: faUserPlus, to: "/login" },
-    { id: 4, title: "About YourSound", icon: faUserPlus, to: "/login" },
+    { id: 2, title: "Log In", icon: faRightToBracket, to: "/login" },
+    { id: 3, title: "Stream", icon: faForward, to: "/login" },
+    { id: 4, title: "About YourSound", icon: faInfo, to: "/login" },
+  ];
+  const navigationForDesktop: NavigationItem[] = [
+    { id: 1, title: "Stream", icon: faForward, to: "/" },
+    { id: 2, title: "Trend", icon: faArrowTrendUp, to: "/" },
+    { id: 3, title: "People", icon: faPeopleArrows, to: "/" },
+    { id: 4, title: "About YourSound", icon: faInfo, to: "/" },
   ];
 
+  //   Handlers
+
+  // Handler function for Log in button on PublicNavbar
+
+  const loginNavigate = (): void => {
+    navigate("/login");
+  };
+  const signUpNavigate = (): void => {
+    navigate("/signup");
+  };
+  const mainPageNavigate = (): void => {
+    navigate("/");
+  };
+
   return (
-    <Disclosure as="nav" className="bg-gray-700 p-2">
+    <Disclosure
+      as="nav"
+      className="bg-blue-500 p-2 sm:flex sm:justify-around items-center"
+    >
       {({ open }) => (
         /* Use the `open` state to conditionally change the direction of an icon. */
         <>
@@ -60,8 +90,18 @@ function NavbarPublic() {
           >
             {/* Here logo comes  */}
 
-            <Disclosure.Panel as="div" className="mt-3 flex gap-4 ">
-              <img className="w-24 h-24 rounded-2xl" src={Logo}></img>
+            <Disclosure.Panel as="div" className="mt-3 flex sm:hidden gap-4  ">
+              {/* <img
+                onClick={mainPageNavigate}
+                className="w-24 h-24 rounded-2xl cursor-pointer"
+                src={Logo}
+              ></img> */}
+              <Disclosure.Button
+                onClick={mainPageNavigate}
+                as="img"
+                className="w-24 h-24 rounded-2xl cursor-pointer"
+                src={Logo}
+              ></Disclosure.Button>
               <div className="flex flex-col gap-3 mt-2">
                 <p className="font-extrabold">YourSound</p>
                 <h2 className="font-thin">Play - Listen - Publish</h2>
@@ -72,16 +112,10 @@ function NavbarPublic() {
               </div>
             </Disclosure.Panel>
 
-            {/* <Disclosure.Panel as="ul" className="sm:hidden mt-3 h-screen ">
-            
-              {navigation.map((element) => (
-                <li className="mb-2" key={element}>
-                  {element}
-                </li>
-              ))}
-            </Disclosure.Panel> */}
-
-            <Disclosure.Panel as="ul" className="flex flex-col gap-2 mt-4 ml-2">
+            <Disclosure.Panel
+              as="ul"
+              className="flex flex-col sm:hidden gap-2 mt-4 ml-2"
+            >
               {navigation.map((item) => (
                 <Disclosure.Button
                   onClick={() => {
@@ -90,9 +124,12 @@ function NavbarPublic() {
                     }
                   }}
                   as="li"
-                  className="flex gap-3 cursor-pointer text-lg"
+                  className="flex gap-4 cursor-pointer text-lg hover:bg-slate-400 rounded-lg"
                 >
-                  <FontAwesomeIcon icon={item.icon}></FontAwesomeIcon>
+                  <FontAwesomeIcon
+                    className="w-8 self-center "
+                    icon={item.icon}
+                  ></FontAwesomeIcon>
                   {item.title}
                 </Disclosure.Button>
               ))}
@@ -100,17 +137,40 @@ function NavbarPublic() {
           </Transition>
 
           {/* For Desktop*/}
-          <div className="hidden sm:flex gap-3 ">
-            <ul className="">
-              {navigation.map((listElement) => (
-                <li>{listElement.title}</li>
+          <div className="hidden sm:flex items-center">
+            <img
+              onClick={mainPageNavigate}
+              className="w-20 h-20 rounded-xl cursor-pointer"
+              src={Logo}
+            ></img>
+          </div>
+          <div className="hidden sm:flex gap-6">
+            <ul className="flex gap-2 text-white">
+              {navigationForDesktop.map((listElement) => (
+                <li className="flex flex-col gap-1 cursor-pointer text-lg hover:text-gray-200">
+                  {listElement.title}
+                  <FontAwesomeIcon icon={listElement.icon}></FontAwesomeIcon>
+                </li>
               ))}
             </ul>
-            <div>
-              <label>Search</label>{" "}
-              <input className="bg-white rounded-xl" type="text" />
+            <div className="flex items-center">
+              <label>
+                <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
+              </label>{" "}
+              <input
+                className="bg-white rounded-xl text-black px-2 py-1"
+                type="text"
+              />
             </div>
           </div>
+
+          <SignInSignUpComp
+            onClick={loginNavigate}
+            onClick2={signUpNavigate}
+            style="hidden sm:flex"
+            variant="outlined"
+            variant2="solid"
+          ></SignInSignUpComp>
         </>
       )}
     </Disclosure>

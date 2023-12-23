@@ -6,11 +6,11 @@ import { useState } from "react";
 import HomePage from "./pages/Home/HomePage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import LoginPage from "./pages/Login/LoginPage";
-import PrivateRoute from "./middleware/privateRoute";
+import PrivateRoute from "./middleware/PrivateRoute";
 import SignUpPage from "./pages/SignUp/SignUpPage";
 
 function App() {
-  const [auth, setAuth] = useState(true);
+  const [auth] = useState(true);
 
   return (
     <Routes>

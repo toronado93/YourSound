@@ -194,3 +194,12 @@ table {
 body {
   height: 100vh;
 }
+
+.bbb {
+  border: 1px solid white;
+}
+
+/* remove default focus */
+input:focus {
+  outline: none;
+}
