@@ -14,16 +14,12 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-// Material UI
-// import List from "@mui/joy/List";
-// import ListItem from "@mui/joy/ListItem";
-// import ListItemButton from "@mui/material/ListItemButton";
-
 import Logo from "../assets/img/logo.svg";
 
 import { Disclosure, Transition } from "@headlessui/react";
 
 import SignInSignUpComp from "./SignInSignUpComp";
+import { useState } from "react";
 
 type NavigationDestination = "/login" | "/signup" | "/about" | "/";
 
@@ -35,6 +31,8 @@ type NavigationItem = {
 };
 
 function NavbarPublic() {
+  const [hoveredItem, setHoveredItem] = useState<null | number>(null);
+
   const navigate = useNavigate();
   const navigation: NavigationItem[] = [
     { id: 1, title: "Sign Up", icon: faUserPlus, to: "/signup" },
@@ -49,6 +47,8 @@ function NavbarPublic() {
     { id: 4, title: "About YourSound", icon: faInfo, to: "/" },
   ];
 
+  // States
+
   //   Handlers
 
   // Handler function for Log in button on PublicNavbar
@@ -61,6 +61,15 @@ function NavbarPublic() {
   };
   const mainPageNavigate = (): void => {
     navigate("/");
+  };
+
+  const handleMouseEnter = (index: number): void => {
+    setHoveredItem(index);
+  };
+
+  // Event handler for leaving a list item
+  const handleMouseLeave = (): void => {
+    setHoveredItem(null);
   };
 
   return (
@@ -137,6 +146,7 @@ function NavbarPublic() {
           </Transition>
 
           {/* For Desktop*/}
+          {/* Logo Img */}
           <div className="hidden sm:flex items-center">
             <img
               onClick={mainPageNavigate}
@@ -144,15 +154,36 @@ function NavbarPublic() {
               src={Logo}
             ></img>
           </div>
+
+          {/* Middle List */}
+
           <div className="hidden sm:flex gap-6">
             <ul className="flex gap-2 text-white">
-              {navigationForDesktop.map((listElement) => (
-                <li className="flex flex-col gap-1 cursor-pointer text-lg hover:text-gray-200">
+              {navigationForDesktop.map((listElement, index) => (
+                <li
+                  key={listElement.id}
+                  className="flex flex-col gap-1 cursor-pointer text-lg hover:text-gray-200"
+                  // Mouse Enter and leave function for grabbing each index number and trigger animation
+                  onMouseEnter={() => {
+                    handleMouseEnter(index + 1);
+                  }}
+                  onMouseLeave={handleMouseLeave}
+                >
                   {listElement.title}
-                  <FontAwesomeIcon icon={listElement.icon}></FontAwesomeIcon>
+
+                  {/* If the item is hovered item trigger to beat animation */}
+                  {index === Number(hoveredItem) - 1 ? (
+                    <FontAwesomeIcon
+                      icon={listElement.icon}
+                      bounce
+                    ></FontAwesomeIcon>
+                  ) : (
+                    <FontAwesomeIcon icon={listElement.icon}></FontAwesomeIcon>
+                  )}
                 </li>
               ))}
             </ul>
+            {/* Search Bar */}
             <div className="flex items-center">
               <label>
                 <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
