@@ -5,7 +5,18 @@ import DefaultProfilePic from "../assets/img/profile.jpeg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faPencil, faImages } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useParams } from "react-router-dom";
+
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import {
+  userInfo,
+  userStatus,
+  userError,
+  fetchUser,
+} from "../redux/slices/userSlice";
 
 type ListItem = {
   id: number;
@@ -18,12 +29,30 @@ type HoveredButtons = {
 };
 
 function Profile() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { profileId } = useParams<string>();
+
+  // States
+
+  // User Info comes from Redux
+  const user = useSelector(userInfo);
+  const status = useSelector(userStatus);
+  const error = useSelector(userError);
+
+  const { id, username = "", email = "", phone = "", address = {} } = user;
+
   const navigation: ListItem[] = [
     { id: 1, title: "My Profile" },
     { id: 2, title: "Payment" },
     { id: 3, title: "Billing" },
     { id: 4, title: "Delete Account", important: true },
   ];
+
+  // Fetching User Data
+
+  useEffect(() => {
+    dispatch(fetchUser(profileId));
+  }, []);
 
   // We create an state object , instead create state variable , in order to group edit buttons
   // when user come over the button we fill the empty object with variable and give them true
@@ -93,7 +122,9 @@ function Profile() {
               <Tab.Panels>
                 {/* Profile Page */}
                 <Tab.Panel className="mt-3 w-96 flex flex-col gap-6 pr-6 ">
-                  <h2 className="font-bold tracking-wide">My Profile</h2>
+                  <h2 className="font-bold tracking-wide">
+                    My Profile - {status}
+                  </h2>
                   <div className="flex gap-3 ">
                     <div className="">
                       <img
@@ -105,9 +136,11 @@ function Profile() {
                         Change Profile Image
                       </span>
                     </div>
-                    <div>
+                    <div className="flex-1 overflow-hidden">
                       <div className="flex justify-between">
-                        <h2 className="tracking-wide">Information</h2>
+                        <h2 className="tracking-wide self-center">
+                          Information
+                        </h2>
                         <button
                           onMouseEnter={mouseEnterHandler}
                           onMouseLeave={mouseLeaveHandler}
@@ -124,15 +157,15 @@ function Profile() {
                       <div className="mt-2 font-thin flex flex-col gap-1">
                         <div className="flex flex-col gap-1">
                           <label className="text-gray-400">Name</label>
-                          <span>Emin Ertac Pehlivan</span>
+                          <span>{username}</span>
                         </div>
                         <div className="flex flex-col gap-1">
                           <label className="text-gray-400">Email</label>
-                          <span>emin.ertac1905@hotmail.com</span>
+                          <span>{email}</span>
                         </div>
                         <div className="flex flex-col gap-1">
                           <label className="text-gray-400">Phone</label>
-                          <span>+4407455999999</span>
+                          <span>{phone}</span>
                         </div>
                       </div>
                     </div>
@@ -159,21 +192,21 @@ function Profile() {
                       <div className="flex justify-between gap-16">
                         <div className="flex flex-col gap-1 ">
                           <label className="text-gray-400">Country</label>
-                          <span>England</span>
+                          <span>{address.country}</span>
                         </div>
                         <div className="flex flex-col gap-1 flex-1 items-center">
                           <label className="text-gray-400">City/State</label>
-                          <span>Middlebrought</span>
+                          <span>{address.city}</span>
                         </div>
                       </div>
                       <div className="flex justify-between mt-5 gap-10">
                         <div className="flex flex-col gap-1">
                           <label className="text-gray-400">Postal Code</label>
-                          <span>bh122la</span>
+                          <span>{address.postal_code}</span>
                         </div>
                         <div className="flex flex-col flex-1 items-center gap-1">
                           <label className="text-gray-400">Street</label>
-                          <span>99 Chatsworth Road</span>
+                          <span>{address.street}</span>
                         </div>
                       </div>
                     </div>

@@ -25,7 +25,10 @@ function App() {
         <Route path="signup" element={<SignUpPage></SignUpPage>}></Route>
 
         <Route element={<PrivateRoute></PrivateRoute>}>
-          <Route path="profile" element={<ProfilePage></ProfilePage>}></Route>
+          <Route
+            path="/profile/:profileId"
+            element={<ProfilePage></ProfilePage>}
+          ></Route>
         </Route>
       </Route>
     </Routes>

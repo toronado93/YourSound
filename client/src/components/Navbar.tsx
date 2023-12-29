@@ -26,7 +26,7 @@ type NavigationDestination =
   | "/signup"
   | "/about"
   | "/"
-  | "/profile"
+  | `/profile/${string}`
   | "/friends";
 
 type NavigationItem = {
@@ -37,6 +37,8 @@ type NavigationItem = {
 };
 
 function NavbarPublic() {
+  const [userId] = useState("658ce352d7eb5f73c7e3a160");
+
   const [hoveredItem, setHoveredItem] = useState<null | number>(null);
 
   const navigate = useNavigate();
@@ -48,7 +50,12 @@ function NavbarPublic() {
   ];
   const navigationForDesktop: NavigationItem[] = [
     { id: 1, title: "Stream", icon: faForward, to: "/" },
-    { id: 2, title: "Profile", icon: faArrowTrendUp, to: "/profile" },
+    {
+      id: 2,
+      title: "Profile",
+      icon: faArrowTrendUp,
+      to: `/profile/${userId}`,
+    },
     { id: 3, title: "Friends", icon: faPeopleArrows, to: "/friends" },
     { id: 4, title: "About YourSound", icon: faInfo, to: "/" },
   ];
