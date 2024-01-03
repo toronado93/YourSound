@@ -10,8 +10,11 @@ function SignUp() {
         </div>
         <div className="flex flex-col sm:flex-row mt-1  ">
           <SignUpForm></SignUpForm>
-          <div className="self-center">
-            <img className="w-full h-80 sm:h-96" src={SignUpImg}></img>
+          <div className="bg-white flex flex-col justify-center">
+            <img
+              className="w-full h-56 sm:w-full sm:h-96"
+              src={SignUpImg}
+            ></img>
           </div>
         </div>
       </div>

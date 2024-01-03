@@ -3,16 +3,17 @@ import axios from "../../config/axios";
 
 import { RootState } from "../store";
 
-type Address = {
+export type Address = {
   country: string | null;
   city: string;
-  postal_code: string;
+  postalCode: string;
   street: string;
 };
 
-type User = {
+export type User = {
   id: string;
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: number;
   address: Address;
@@ -27,19 +28,22 @@ type UserInitialState = {
 const initialState: UserInitialState = {
   userObj: {
     id: "",
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: 0,
     address: {
       country: "",
       city: "",
-      postal_code: "",
+      postalCode: "",
       street: "",
     },
   },
   status: "idle",
   error: null,
 };
+
+// Fetch User Info For Profile Component
 
 export const fetchUser = createAsyncThunk(
   "user/userprofile",

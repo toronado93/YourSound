@@ -37,7 +37,7 @@ type NavigationItem = {
 };
 
 function NavbarPublic() {
-  const [userId] = useState("658ce352d7eb5f73c7e3a160");
+  const [userId] = useState("6594493bd1c3844397169583");
 
   const [hoveredItem, setHoveredItem] = useState<null | number>(null);
 

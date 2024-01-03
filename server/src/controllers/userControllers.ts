@@ -34,14 +34,15 @@ const getUserById = async (req: Request, res: Response) => {
       });
     } else {
       // password should not be returned and also we only need some of information
-      const { username, email, address } = findUser;
+      const { firstName, lastName, email, address } = findUser;
 
       return res.status(200).json({
         code: 200,
         status: "success",
         message: "User found successfully",
         data: {
-          username: username,
+          firstName: firstName,
+          lastName: lastName,
           email: email,
           address: address,
         },
@@ -55,18 +56,28 @@ const getUserById = async (req: Request, res: Response) => {
 // New user
 const newUser = async (req: Request, res: Response) => {
   // Information recieved from front-end
-  const { _id, username, email, password, country, city, postal_code } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    country,
+    city,
+    postalCode,
+    street,
+  } = req.body;
 
   // User object is created for matching db schema
   const user_object = {
-    username: username,
+    firstName: firstName,
+    lastName: lastName,
     email: email,
     password: password,
     address: {
       country: country,
       city: city,
-      postalCode: postal_code,
+      postalCode: postalCode,
+      street: street,
     },
   };
 
@@ -88,21 +99,18 @@ const newUser = async (req: Request, res: Response) => {
         code: 409,
         status: "error",
         message: "User with this email already exists",
-        data: {
-          existingUserId: existingUser._id,
-          email: existingUser.email,
-        },
       });
     }
 
     const mongo_response = await newuser.save();
-    const { username, email } = user_object;
+    const { firstName, lastName, email } = user_object;
     res.json({
       code: 201,
       status: "success",
       message: "User created successfully",
       data: {
-        username: username,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
       },
     });

@@ -1,13 +1,14 @@
 import mongoose from "mongoose";
 
 const user_schema = new mongoose.Schema({
-  username: String,
+  firstName: String,
+  lastName: String,
   email: String,
   password: String,
   address: {
     country: String,
     city: String,
-    postal_code: String,
+    postalCode: String,
     street: String,
   },
   date: { type: Date, default: Date.now },

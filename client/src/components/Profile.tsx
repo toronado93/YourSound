@@ -14,8 +14,8 @@ import { AppDispatch } from "../redux/store";
 import {
   userInfo,
   userStatus,
-  userError,
   fetchUser,
+  User,
 } from "../redux/slices/userSlice";
 
 type ListItem = {
@@ -37,9 +37,23 @@ function Profile() {
   // User Info comes from Redux
   const user = useSelector(userInfo);
   const status = useSelector(userStatus);
-  const error = useSelector(userError);
+  // const error = useSelector(userError);
 
-  const { id, username = "", email = "", phone = "", address = {} } = user;
+  const {
+    firstName = "",
+    lastName = "",
+    email = "",
+    phone = 0,
+    address = {
+      country: null,
+      city: "",
+      postalCode: "",
+      street: "",
+    },
+  }: User = user;
+
+  // name is derive state
+  const name = [firstName, lastName].join(" ");
 
   const navigation: ListItem[] = [
     { id: 1, title: "My Profile" },
@@ -52,7 +66,7 @@ function Profile() {
 
   useEffect(() => {
     dispatch(fetchUser(profileId));
-  }, []);
+  }, [dispatch, profileId]);
 
   // We create an state object , instead create state variable , in order to group edit buttons
   // when user come over the button we fill the empty object with variable and give them true
@@ -157,7 +171,7 @@ function Profile() {
                       <div className="mt-2 font-thin flex flex-col gap-1">
                         <div className="flex flex-col gap-1">
                           <label className="text-gray-400">Name</label>
-                          <span>{username}</span>
+                          <span>{name}</span>
                         </div>
                         <div className="flex flex-col gap-1">
                           <label className="text-gray-400">Email</label>
@@ -202,7 +216,7 @@ function Profile() {
                       <div className="flex justify-between mt-5 gap-10">
                         <div className="flex flex-col gap-1">
                           <label className="text-gray-400">Postal Code</label>
-                          <span>{address.postal_code}</span>
+                          <span>{address.postalCode}</span>
                         </div>
                         <div className="flex flex-col flex-1 items-center gap-1">
                           <label className="text-gray-400">Street</label>

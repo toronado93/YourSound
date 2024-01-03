@@ -8,6 +8,7 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import LoginPage from "./pages/Login/LoginPage";
 import PrivateRoute from "./middleware/PrivateRoute";
 import SignUpPage from "./pages/SignUp/SignUpPage";
+import WelcomePage from "./pages/Welcome/WelcomePage";
 
 function App() {
   const [auth] = useState(true);
@@ -29,6 +30,7 @@ function App() {
             path="/profile/:profileId"
             element={<ProfilePage></ProfilePage>}
           ></Route>
+          <Route path="/welcome" element={<WelcomePage></WelcomePage>}></Route>
         </Route>
       </Route>
     </Routes>
